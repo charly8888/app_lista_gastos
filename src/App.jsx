@@ -9,6 +9,7 @@ import Boton from './elements/Boton'
 import BotonCerrarSesion from './elements/BotonCerrarSesion'
 import { useAuth } from './contextos/AuthContext'
 import { Navigate, useNavigate } from 'react-router-dom'
+import FormularioGasto from './components/FormularioGasto'
 
 const App = () => {
   
@@ -29,6 +30,7 @@ const App = () => {
           </ContenedorBotones>
         </ContenedorHeader>
       </Header>
+      <FormularioGasto />
     </>
   )
 } else {
