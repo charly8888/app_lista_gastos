@@ -10,6 +10,7 @@ import BotonCerrarSesion from './elements/BotonCerrarSesion'
 import { useAuth } from './contextos/AuthContext'
 import { Navigate, useNavigate } from 'react-router-dom'
 import FormularioGasto from './components/FormularioGasto'
+import BarraTotalGastado from './components/BarraTotalGastado'
 
 const App = () => {
   
@@ -25,12 +26,13 @@ const App = () => {
           <Titulo>agregar gasto</Titulo>
           <ContenedorBotones>
             <Boton to="/categorias">Categorias</Boton>
-            <Boton to="/lista">Lista de Gstos</Boton>
+            <Boton to="/lista">Lista de gastos</Boton>
             <BotonCerrarSesion />
           </ContenedorBotones>
         </ContenedorHeader>
       </Header>
       <FormularioGasto />
+      <BarraTotalGastado />
     </>
   )
 } else {

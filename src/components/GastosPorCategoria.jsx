@@ -3,6 +3,7 @@ import { Header, Titulo } from '../elements/Header'
 import BtnRegresar from '../elements/BtnRegresar'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contextos/AuthContext'
+import BarraTotalGastado from './BarraTotalGastado'
 
 const GastosPorCategoria = () => {
   const { usuario } = useAuth()
@@ -16,6 +17,7 @@ const GastosPorCategoria = () => {
           <BtnRegresar />
           <Titulo>Gastos por Categoría</Titulo>
         </Header>
+        <BarraTotalGastado />
       </>
     )
   } else {
