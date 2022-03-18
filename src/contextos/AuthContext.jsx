@@ -16,8 +16,8 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const cancelarSuscripcion = onAuthStateChanged(auth, (user) => {
-        setUsuario(user)
-        setCargando(false)
+      setUsuario(user)
+      setCargando(false)
     })
     return cancelarSuscripcion
   }, [])

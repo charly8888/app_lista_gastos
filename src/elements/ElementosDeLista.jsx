@@ -54,7 +54,7 @@ const ElementoListaCategorias = styled.li`
 `
 
 const Categoria = styled.div`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.25rem; /* 20px */
   text-transform: uppercase;
   display: flex;

@@ -37,7 +37,7 @@ const ListaDeGastos = () => {
   const fechaEsIgual = (gastos, i, gasto) => {
     return (
       i !== 0 &&
-      formatearFecha(gasto.fecha) === formatearFecha(gastos[i - 1].fecha) &&
+      formatearFecha(gasto.fecha) == formatearFecha(gastos[i - 1].fecha) &&
       true
     )
   }

@@ -14,6 +14,7 @@ import { Helmet } from 'react-helmet'
 import favicon from './images/logo.png'
 import Fondo from './elements/Fondo'
 import { AuthContext, AuthProvider, useAuth } from './contextos/AuthContext'
+import { TotalGastadoProvider } from './contextos/TotalGastadoEnElMes'
 
 WebFont.load = {
   google: {
@@ -22,7 +23,6 @@ WebFont.load = {
 }
 
 function Index() {
-
   return (
     <>
       <Helmet>
@@ -30,22 +30,23 @@ function Index() {
         <title>Hola Mundo</title>
       </Helmet>
       <AuthProvider>
-        <BrowserRouter>
-          <Contenedor>
-            <Routes>
-              <Route path="/iniciar-sesion" element={<InicioSesion />} />
-              <Route path="/crear-cuenta" element={<RegistroUsuarios />} />
+        <TotalGastadoProvider>
+          <BrowserRouter>
+            <Contenedor>
+              <Routes>
+                <Route path="/iniciar-sesion" element={<InicioSesion />} />
+                <Route path="/crear-cuenta" element={<RegistroUsuarios />} />
 
-              <Route path="/" element={<App />} />
-              <Route path="/categorias" element={<GastosPorCategoria />} />
+                <Route path="/" element={<App />} />
+                <Route path="/categorias" element={<GastosPorCategoria />} />
 
-              <Route path="/lista" element={<ListaDeGastos />} />
-              <Route path="/editar/:id" element={<EditarGasto />} />
-              <Route path="*" element={<InicioSesion />} />
-              
-            </Routes>
-          </Contenedor>
-        </BrowserRouter>
+                <Route path="/lista" element={<ListaDeGastos />} />
+                <Route path="/editar/:id" element={<EditarGasto />} />
+                <Route path="*" element={<InicioSesion />} />
+              </Routes>
+            </Contenedor>
+          </BrowserRouter>
+        </TotalGastadoProvider>
       </AuthProvider>
 
       <Fondo />

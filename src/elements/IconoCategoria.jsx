@@ -1,3 +1,4 @@
+import { daysToWeeks } from 'date-fns/esm'
 import { ReactComponent as IconComida } from '../images/cat_comida.svg'
 import { ReactComponent as IconCompras } from '../images/cat_compras.svg'
 import { ReactComponent as IconCuentasYPagos } from '../images/cat_cuentas-y-pagos.svg'
@@ -13,7 +14,7 @@ const IconoCategoria = ({ id }) => {
       return <IconComida />
     case 'compras':
       return <IconCompras />
-    case 'cuentas y pagos':
+    case 'cuentas y pagos' :
       return <IconCuentasYPagos />
     case 'diversion':
       return <IconDiversion />

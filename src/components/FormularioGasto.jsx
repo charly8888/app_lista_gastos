@@ -5,18 +5,20 @@ import {
   InputGrande,
   ContenedorBoton,
 } from '../elements/ElementosDeFormularios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Boton from '../elements/Boton'
 import { ReactComponent as IconoPlus } from '../images/plus.svg'
 import SelectCategorias from './SelectCategorias'
 import { DatePicker } from './DatePicker'
 import agregarGasto from '../firebase/agregarGasto'
 import getUnixTime from 'date-fns/getUnixTime'
-// import fromUnixTime from 'date-fns/fromUnixTime'
+import fromUnixTime from 'date-fns/fromUnixTime'
 import { useAuth } from '../contextos/AuthContext'
 import Alerta from '../elements/Alerta'
+import { useNavigate } from 'react-router-dom'
+import editarGasto from '../firebase/editarGasto'
 
-const FormularioGasto = () => {
+const FormularioGasto = ({ gasto, idGasto }) => {
   const [inputDescricion, setInputDescricion] = useState('')
   const [inputCantidad, setInputCantidad] = useState('')
   const [categoria, setCategoria] = useState('hogar')
@@ -24,6 +26,21 @@ const FormularioGasto = () => {
   const [estadoAlerta, setEstadoAlerta] = useState(false)
   const [alerta, setAlerta] = useState({})
   const { usuario } = useAuth()
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (gasto) {
+      if (gasto.usuario === usuario.uid) {
+        console.log(gasto)
+        setCategoria(gasto.categoria)
+        setInputDescricion(gasto.descripcion)
+        setInputCantidad(gasto.cantidad)
+        setFecha(fromUnixTime(gasto.fecha))
+      } else {
+        navigate('/lista')
+      }
+    }
+  }, [gasto, usuario, navigate])
+
   const handleChange = (e) => {
     if (e.target.name === 'descripcion') {
       setInputDescricion(e.target.value)
@@ -39,31 +56,49 @@ const FormularioGasto = () => {
     // Comprobamos que haya una descripcion y valor
     if (inputDescricion !== '' && inputCantidad !== '') {
       if (cantidad) {
-        agregarGasto({
-          descripcion: inputDescricion,
-          cantidad,
-          categoria,
-          fecha: getUnixTime(fecha),
-          usuario: usuario.uid,
-        })
-          .then(() => {
-            setInputDescricion('')
-            setInputCantidad('')
-            setCategoria('hogar')
-            setFecha(new Date())
-            setEstadoAlerta(true)
-            setAlerta({
-              tipo: 'exito',
-              mensaje: 'El gasto se guardó correctamente',
-            })
+        if (gasto) {
+          editarGasto({
+            id: idGasto,
+            categoria,
+            descripcion: inputDescricion,
+            cantidad,
+            fecha: getUnixTime(fecha),
           })
-          .catch(() => {
-            setEstadoAlerta(true)
-            setAlerta({
-              tipo: 'exito',
-              mensaje: 'Hubo un problema al intentar agregar tu gasto',
+            .then(() => navigate('/lista'))
+            .catch(() => {
+              setEstadoAlerta(true)
+              setAlerta({
+                tipo: 'error',
+                mensaje: 'Hubo un problema al intentar editar tu gasto',
+              })
             })
+        } else {
+          agregarGasto({
+            descripcion: inputDescricion,
+            cantidad: Number(cantidad),
+            categoria,
+            fecha: getUnixTime(fecha),
+            usuario: usuario.uid,
           })
+            .then(() => {
+              setInputDescricion('')
+              setInputCantidad('')
+              setCategoria('hogar')
+              setFecha(new Date())
+              setEstadoAlerta(true)
+              setAlerta({
+                tipo: 'exito',
+                mensaje: 'El gasto se guardó correctamente',
+              })
+            })
+            .catch(() => {
+              setEstadoAlerta(true)
+              setAlerta({
+                tipo: 'error',
+                mensaje: 'Hubo un problema al intentar agregar tu gasto',
+              })
+            })
+        }
       } else {
         setEstadoAlerta(true)
         setAlerta({
@@ -106,7 +141,7 @@ const FormularioGasto = () => {
       </div>
       <ContenedorBoton>
         <Boton as="button" primario conIcono type="submit">
-          Agregar gasto <IconoPlus />
+          {gasto ? 'Editar gasto' : 'Agregar gasto'} <IconoPlus />
         </Boton>
       </ContenedorBoton>
       <Alerta
